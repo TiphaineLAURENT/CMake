@@ -21,7 +21,7 @@ namespace MadeM
 class	Directory
 {
 public:
-	Directory(const std::string &dirname);
+	Directory(const std::string &dirname = ".");
 	Directory(const Directory &);
 	~Directory() = default;
 	Directory &operator=(const Directory &);

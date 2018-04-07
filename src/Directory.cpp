@@ -11,12 +11,17 @@ namespace MadeM
 {
 
 Directory::Directory(const std::string &dirname)
-	: _dirname(dirname), _dir(dirname),
+	: _dirname(dirname), _dir(),
 	  _allEntries(0), _regularEntries(0), _dirEntries(0),
 	  _blockEntries(0), _characterEntries(0), _fifoEntries(0),
 	  _socketEntries(0), _symlinkEntries(0),
 	  _entries()
 {
+	try {
+		_dir = fs::directory_iterator(dirname);
+	} catch (std::experimental::filesystem::v1::__cxx11::filesystem_error &e) {
+		fs::create_directory(dirname);
+	}
 	Refresh();
 }
 
