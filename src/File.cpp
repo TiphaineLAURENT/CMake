@@ -12,12 +12,14 @@ namespace MadeM
 
 	File::File(const std::string &filename, std::ios_base::openmode mode)
 		: _filename(filename), _file(filename, mode),
-		  _lines()
+		  _lines(), _mode(mode)
 	{
 		ReadFile();
 	}
 
 	File::File(const File &copy)
+		: _filename(copy.Filename(), copy.Mode()), _file(_filename),
+		  _lines(copy.Lines()), _mode(copy.Mode())
 	{
 	}
 
@@ -28,6 +30,10 @@ namespace MadeM
 
 	File &File::operator=(const File &other)
 	{
+		_filename = other.Filename();
+		_file = std::fstream(_filename);
+		_lines = other.Lines();
+		_mode = other.Mode();
 		return *this;
 	}
 
@@ -78,6 +84,26 @@ namespace MadeM
 		output.pop_back();
 		out << output;
 		return out;
+	}
+
+	const std::string &File::operator[](size_t pos) const
+	{
+		return _lines[pos];
+	}
+
+	const std::ios_base::openmode &File::Mode() const noexcept
+	{
+		return _mode;
+	}
+
+	const std::vector<std::string> &File::Lines() const noexcept
+	{
+		return _lines;
+	}
+
+	const std::fstream &File::Stream() const noexcept
+	{
+		return _file;
 	}
 
 }

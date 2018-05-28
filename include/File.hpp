@@ -33,13 +33,18 @@ public:
 
 	std::vector<std::string> &ReadFile();
 	void operator<<(const std::string&);
+	const std::string &operator[](size_t) const;
 
 	const std::string &Filename() const noexcept;
+	const std::ios_base::openmode &Mode() const noexcept;
+	const std::vector<std::string> &Lines() const noexcept;
+	const std::fstream &Stream() const noexcept;
 
 private:
 	std::string	_filename;
 	std::fstream	_file;
 	std::vector<std::string> _lines;
+	std::ios_base::openmode _mode;
 };
 
 std::ostream		&operator<<(std::ostream&, const File&);
