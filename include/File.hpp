@@ -31,7 +31,8 @@ public:
 	std::vector<std::string>::const_iterator begin() const noexcept;
 	std::vector<std::string>::const_iterator end() const noexcept;
 
-	std::vector<std::string> &ReadFile();
+	std::string Readline();
+	std::vector<std::string> &Readlines();
 	void operator<<(const std::string&);
 	const std::string &operator[](size_t) const;
 
@@ -39,6 +40,9 @@ public:
 	const std::ios_base::openmode &Mode() const noexcept;
 	const std::vector<std::string> &Lines() const noexcept;
 	const std::fstream &Stream() const noexcept;
+
+	void Clear();
+	int Get();
 
 private:
 	std::string	_filename;

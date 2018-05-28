@@ -14,7 +14,7 @@ namespace MadeM
 		: _filename(filename), _file(filename, mode),
 		  _lines(), _mode(mode)
 	{
-		ReadFile();
+		Readlines();
 	}
 
 	File::File(const File &copy)
@@ -37,7 +37,7 @@ namespace MadeM
 		return *this;
 	}
 
-	std::vector<std::string> &File::ReadFile()
+	std::vector<std::string> &File::Readlines()
 	{
 		std::string line;
 		while (getline(_file, line))
@@ -104,6 +104,24 @@ namespace MadeM
 	const std::fstream &File::Stream() const noexcept
 	{
 		return _file;
+	}
+
+	void File::Clear()
+	{
+		_file.clear();
+	}
+
+	int File::Get()
+	{
+		return _file.get();
+	}
+
+	std::string File::Readline()
+	{
+		std::string line;
+		std::getline(_file, line);
+
+		return line;
 	}
 
 }
