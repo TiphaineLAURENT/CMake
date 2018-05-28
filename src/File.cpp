@@ -11,16 +11,19 @@ namespace MadeM
 {
 
 	File::File(const std::string &filename, std::ios_base::openmode mode)
-		: _filename(filename), _file(filename, mode),
+		: _filename(filename), _extension(), _file(filename, mode),
 		  _lines(), _mode(mode)
 	{
+		ReadExtension();
 		Readlines();
 		Clear();
 	}
 
 	File::File(const File &copy)
-		: _filename(copy.Filename(), copy.Mode()), _file(_filename),
-		  _lines(copy.Lines()), _mode(copy.Mode())
+		: _filename(copy.Filename(), copy.Mode()),
+		  _extension(copy.Extension()),
+		  _file(_filename), _lines(copy.Lines()),
+		  _mode(copy.Mode())
 	{
 	}
 
@@ -138,6 +141,7 @@ namespace MadeM
 		Close();
 		_file.open(filename, mode);
 		_filename = filename;
+		ReadExtension();
 		_mode = mode;
 		Readlines();
 		Clear();
@@ -152,6 +156,18 @@ namespace MadeM
 	bool File::IsOpen()
 	{
 		return _file.is_open();
+	}
+
+	const std::string &File::Extension() const noexcept
+	{
+		return _extension;
+	}
+
+	const std::string &File::ReadExtension()
+	{
+		auto const pos = _filename.find_last_of('.');
+		_extension = _filename.substr(pos + 1);
+		return _extension;
 	}
 
 }
