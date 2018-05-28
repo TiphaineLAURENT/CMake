@@ -17,8 +17,8 @@ int		main(int ac, char **av)
 		return -1;
 
 	MadeM::File	file(av[1]);
+	MadeM::File	makefile("Makefile");
 
-	std::cout << file << std::endl;
-
+	file = makefile;
 	return 0;
 }

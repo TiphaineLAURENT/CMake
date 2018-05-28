@@ -15,6 +15,7 @@ namespace MadeM
 		  _lines(), _mode(mode)
 	{
 		Readlines();
+		Clear();
 	}
 
 	File::File(const File &copy)
@@ -25,15 +26,12 @@ namespace MadeM
 
 	File::~File()
 	{
-		_file.close();
+		Close();
 	}
 
-	File &File::operator=(const File &other)
+	File &File::operator=(File &other)
 	{
-		_filename = other.Filename();
-		_file = std::fstream(_filename);
-		_lines = other.Lines();
-		_mode = other.Mode();
+		*this = other.Readlines();
 		return *this;
 	}
 
@@ -42,7 +40,6 @@ namespace MadeM
 		std::string line;
 		while (getline(_file, line))
 			_lines.emplace_back(line);
-		_file.clear();
 		return _lines;
 	}
 
@@ -122,6 +119,39 @@ namespace MadeM
 		std::getline(_file, line);
 
 		return line;
+	}
+
+	File &File::operator=(const std::vector<std::string> &lines)
+	{
+		Close();
+		_file.open(_filename, std::fstream::out | std::fstream::trunc);
+		for (auto &line : lines)
+			_file << line + "\n";
+		Close();
+		_file.open(_filename, _mode);
+		Readlines();
+		return *this;
+	}
+
+	void File::Open(const std::string &filename, std::ios_base::openmode mode)
+	{
+		Close();
+		_file.open(filename, mode);
+		_filename = filename;
+		_mode = mode;
+		Readlines();
+		Clear();
+	}
+
+	void File::Close()
+	{
+		if (IsOpen())
+			_file.close();
+	}
+
+	bool File::IsOpen()
+	{
+		return _file.is_open();
 	}
 
 }
